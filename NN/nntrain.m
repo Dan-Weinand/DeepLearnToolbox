@@ -37,6 +37,10 @@ n = 1;
 for i = 1 : numepochs
     tic;
     
+    if (i > 99*numepochs/100) 
+        nn.dcTestSamples = 10000;
+    end
+    
     kk = randperm(m);
     for l = 1 : numbatches
         batch_x = train_x(kk((l - 1) * batchsize + 1 : l * batchsize), :);
@@ -48,10 +52,13 @@ for i = 1 : numepochs
         
         batch_y = train_y(kk((l - 1) * batchsize + 1 : l * batchsize), :);
         
+        % Generate the dropping mask
+        for z = 2 : (nn.n-1)
+            nn.dropConnectMask{z - 1} = rand(size(nn.W{z - 1}))>nn.dropConnectFraction;
+        end
         nn = nnff(nn, batch_x, batch_y);
         nn = nnbp(nn);
         nn = nnapplygrads(nn);
-        
         L(n) = nn.L;
         
         n = n + 1;
@@ -74,4 +81,3 @@ for i = 1 : numepochs
     nn.learningRate = nn.learningRate * nn.scaling_learningRate;
 end
 end
-

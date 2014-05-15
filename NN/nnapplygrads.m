@@ -4,19 +4,17 @@ function nn = nnapplygrads(nn)
 % weights and biases
     
     for i = 1 : (nn.n - 1)
-        if(nn.weightPenaltyL2>0)
-            dW = nn.dW{i} + nn.weightPenaltyL2 * [zeros(size(nn.W{i},1),1) nn.W{i}(:,2:end)];
-        else
-            dW = nn.dW{i};
+        dW = nn.learningRate * nn.dW{i};
+            
+        if (nn.dropConnectFraction > 0 &&(i ~= (nn.n-1)))
+            dW = dW.*nn.dropConnectMask{i};
         end
-        
-        dW = nn.learningRate * dW;
-        
-        if(nn.momentum>0)
+            
+        if (nn.momentum > 0)
             nn.vW{i} = nn.momentum*nn.vW{i} + dW;
             dW = nn.vW{i};
         end
-            
+        
         nn.W{i} = nn.W{i} - dW;
     end
 end

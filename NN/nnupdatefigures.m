@@ -36,19 +36,19 @@ if i > 1 %dont plot first point, its only a point
     figure(fhandle);   
     if strcmp(nn.output,'softmax')  %also plot classification error
                 
-        p1 = subplot(1,2,1);
+%        p1 = subplot(1,2,1);
         plot(plot_x,plot_ye);
         xlabel('Number of epochs'); ylabel('Error');title('Error');
         title('Error')
-        legend(p1, M,'Location','NorthEast');
-        set(p1, 'Xlim',[0,opts.numepochs + 1])
+        legend(M,'Location','NorthEast'); % removed p1
+%        set(p1, 'Xlim',[0,opts.numepochs + 1])
         
-        p2 = subplot(1,2,2);
-        plot(plot_x,plot_yfrac);
-        xlabel('Number of epochs'); ylabel('Misclassification rate');
-        title('Misclassification rate')
-        legend(p2, M,'Location','NorthEast');
-        set(p2, 'Xlim',[0,opts.numepochs + 1])
+%        p2 = subplot(1,2,2);
+%        plot(plot_x,plot_yfrac);
+%        xlabel('Number of epochs'); ylabel('Misclassification rate');
+%        title('Misclassification rate')
+%        legend(p2, M,'Location','NorthEast');
+%        set(p2, 'Xlim',[0,opts.numepochs + 1])
         
     else
         
